@@ -1,5 +1,7 @@
+using Pkg; Pkg.activate(".")
 using SymPy
 using Polynomials
+using .Spline
 
 function lagInterp(x, y)
 
@@ -57,4 +59,10 @@ end
 chebyPoly = Polynomial(reverse(cofsC))
 chebyVals = chebyPoly.(resultXs)
 
-plot(resultXs, [theActualVals, thePolyVals, chebyVals])
+## Spline with even spacing
+splinFun = spinterp(x, y)
+splinVals = splinFun.(resultXs)
+
+plot(resultXs, theActualVals, linestyle = :solid, label = "True Function")
+plot!(resultXs, [thePolyVals, chebyVals, splinVals], ls = :dash, label = ["Equal Spaced n=11" "Chebysev pts=11" "Spline n=11"])
+
