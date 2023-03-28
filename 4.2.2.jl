@@ -1,4 +1,6 @@
 using SymPy
+using Polynomials
+using Plots
 
 x = [0:5;]
 y = [0 .5 .8 .9 .941176 .961538]'
@@ -48,7 +50,30 @@ function solveEqn(eqn, equals)
 end
 
 
-#Using the SymPy Equation solver
+##Using the SymPy Equation solver
+##ANSEWR
 xAnswer = solveEqn(lagPoly[2], .93)
 
 ##Using newtons method
+function newtonsMethod(coefs, equals, firstGuess, tol = 1e-6)
+    coefs[lastindex(coefs)]
+    fun = Polynomial(coefs) - equals
+    funp = derivative(fun)
+    converged :: Bool = False
+    prevX = firstGuess
+    curX = 0
+    while !converged
+        curX = prevX - fun(prevX) / funp(prevX)
+        if abs(curX - prevX) <= tol
+            converged = True
+        end
+        prevX = curX
+    end
+    return curX
+end
+
+
+##ANSWER
+newtonsMethod(reverse(cofs), .93, 3)
+
+
